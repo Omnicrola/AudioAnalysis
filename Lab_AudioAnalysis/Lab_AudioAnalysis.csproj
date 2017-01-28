@@ -60,6 +60,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Audio\AudioCanvasRenderer.cs" />
+    <Compile Include="Audio\Decorators\IAudioCanvasDecorator.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Ui\AnalysisControl.xaml.cs">
       <DependentUpon>AnalysisControl.xaml</DependentUpon>
     </Compile>
@@ -71,6 +73,7 @@
     <Compile Include="Ui\Recording.xaml.cs">
       <DependentUpon>Recording.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Audio\Decorators\SmoothingDecorator.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

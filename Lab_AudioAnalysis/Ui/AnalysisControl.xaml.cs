@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Lab_AudioAnalysis.Audio;
+using Lab_AudioAnalysis.Audio.Decorators;
 using Lab_AudioAnalysis.Ui.FilePicker;
 using NAudio.Wave;
 
@@ -30,7 +31,8 @@ namespace Lab_AudioAnalysis.Ui
         {
             InitializeComponent();
             _voiceSampleAnalyzer = new VoiceSampleAnalyzer();
-            _audioCanvasRenderer = new AudioCanvasRenderer(AudioCanvas, 100, 500, 500);
+            _audioCanvasRenderer = new AudioCanvasRenderer(AudioCanvas, 10, 500, 500);
+            _audioCanvasRenderer.Decorators.Add(new SmoothingDecorator(10));
         }
 
         private void Log(string message)

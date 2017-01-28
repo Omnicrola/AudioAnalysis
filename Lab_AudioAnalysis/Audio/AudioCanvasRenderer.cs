@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Lab_AudioAnalysis.Audio.Decorators;
 using NAudio.Wave;
 
 namespace Lab_AudioAnalysis.Audio
@@ -48,6 +49,7 @@ namespace Lab_AudioAnalysis.Audio
             _audioCanvas = audioCanvas;
             _dilutionScale = dilutionScale;
             _allValues = new List<int>();
+            Decorators = new List<IAudioCanvasDecorator>();
 
             _width = width;
             _height = height;
@@ -59,6 +61,8 @@ namespace Lab_AudioAnalysis.Audio
             _polyLine.MaxWidth = Width;
             _polyLine.MaxHeight = Height;
         }
+
+        public List<IAudioCanvasDecorator> Decorators { get; private set; }
 
         public void Render(IWaveProvider audioProvider)
         {
@@ -84,18 +88,20 @@ namespace Lab_AudioAnalysis.Audio
             _audioCanvas.Children.Clear();
             _polyLine.Points.Clear();
 
-            var totalPoints = _allValues.Count / _dilutionScale;
+            int totalPoints = (int)Math.Ceiling(_allValues.Count * 1.0 / _dilutionScale);
             int xPos = 0;
-            double maxX = 0;
+            var dilutedValues = new int[totalPoints];
+
             for (int index = 0; index < _allValues.Count - 1; index += _dilutionScale)
             {
                 int audioValue = _allValues[index];
+                dilutedValues[xPos] = audioValue;
                 var point = Normalize(totalPoints, xPos++, audioValue);
                 _polyLine.Points.Add(point);
-                maxX = Math.Max(maxX, point.X);
             }
-            Console.WriteLine($"Max X: {maxX}");
             _audioCanvas.Children.Add(_polyLine);
+
+            Decorators.ForEach(d => d.Decorate(_audioCanvas, dilutedValues));
         }
 
         private Point Normalize(int totalPoints, int xPos, int y)
