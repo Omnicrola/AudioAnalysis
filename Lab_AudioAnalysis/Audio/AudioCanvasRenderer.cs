@@ -14,35 +14,7 @@ namespace Lab_AudioAnalysis.Audio
     {
         private readonly Canvas _audioCanvas;
         private readonly int _dilutionScale;
-        private Polyline _polyLine;
-        private int _width;
-        private int _height;
-        private List<int> _allValues;
-
-        public Brush BrushColor { get { return _polyLine.Stroke; } set { _polyLine.Stroke = value; } }
-
-        public int Width
-        {
-            get { return _width; }
-            set
-            {
-                _width = value;
-                _polyLine.MaxWidth = value;
-                ReRender();
-            }
-        }
-
-        public int Height
-        {
-            get { return _height; }
-            set
-            {
-                _height = value;
-                _polyLine.MaxHeight = value;
-                ReRender();
-            }
-        }
-
+        private readonly List<int> _allValues;
 
         public AudioCanvasRenderer(Canvas audioCanvas, int dilutionScale, int width, int height)
         {
@@ -50,16 +22,6 @@ namespace Lab_AudioAnalysis.Audio
             _dilutionScale = dilutionScale;
             _allValues = new List<int>();
             Decorators = new List<IAudioCanvasDecorator>();
-
-            _width = width;
-            _height = height;
-
-            _polyLine = new Polyline();
-            _polyLine.Stroke = Brushes.Blue;
-            _polyLine.Name = "waveform";
-            _polyLine.StrokeThickness = 1;
-            _polyLine.MaxWidth = Width;
-            _polyLine.MaxHeight = Height;
         }
 
         public List<IAudioCanvasDecorator> Decorators { get; private set; }
@@ -86,8 +48,12 @@ namespace Lab_AudioAnalysis.Audio
         private void ReRender()
         {
             _audioCanvas.Children.Clear();
-            _polyLine.Points.Clear();
+            var dilutedValues = DiluteValues();
+            Decorators.ForEach(d => d.Decorate(_audioCanvas, dilutedValues));
+        }
 
+        private int[] DiluteValues()
+        {
             int totalPoints = (int)Math.Ceiling(_allValues.Count * 1.0 / _dilutionScale);
             int xPos = 0;
             var dilutedValues = new int[totalPoints];
@@ -96,22 +62,14 @@ namespace Lab_AudioAnalysis.Audio
             {
                 int audioValue = _allValues[index];
                 dilutedValues[xPos] = audioValue;
-                var point = Normalize(totalPoints, xPos++, audioValue);
-                _polyLine.Points.Add(point);
+                xPos++;
             }
-            _audioCanvas.Children.Add(_polyLine);
-
-            Decorators.ForEach(d => d.Decorate(_audioCanvas, dilutedValues));
+            return dilutedValues;
         }
 
-        private Point Normalize(int totalPoints, int xPos, int y)
+        public void Refresh()
         {
-            var point = new Point();
-
-            point.X = 1.0 * xPos / totalPoints * Width;
-            point.Y = Height / 2.0 - y / (Int32.MaxValue * 1.0) * (Height / 2.0);
-            return point;
+            ReRender();
         }
-
     }
 }

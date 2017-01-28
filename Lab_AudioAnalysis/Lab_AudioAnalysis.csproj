@@ -60,6 +60,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Audio\AudioCanvasRenderer.cs" />
+    <Compile Include="Audio\Decorators\AbstractDecorator.cs" />
+    <Compile Include="Audio\Decorators\BackgroundFilterDecorator.cs" />
+    <Compile Include="Audio\Decorators\PassthroughDecorator.cs" />
     <Compile Include="Audio\Decorators\IAudioCanvasDecorator.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Ui\AnalysisControl.xaml.cs">

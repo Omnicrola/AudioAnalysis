@@ -10,11 +10,10 @@ using Lab_AudioAnalysis.Extensions;
 
 namespace Lab_AudioAnalysis.Audio.Decorators
 {
-    public class SmoothingDecorator : IAudioCanvasDecorator
+    public class SmoothingDecorator : AbstractDecorator
     {
         private readonly int _smoothingFactor;
 
-        public Brush BrushColor { get; set; }
 
         public SmoothingDecorator(int smoothingFactor)
         {
@@ -22,7 +21,7 @@ namespace Lab_AudioAnalysis.Audio.Decorators
             BrushColor = Brushes.Green;
         }
 
-        public void Decorate(Canvas audioCanvas, int[] dilutedValues)
+        public override void Decorate(Canvas audioCanvas, int[] dilutedValues)
         {
             var smoothedValues = SmoothValues(dilutedValues);
             var polyline = CreatePolyline();
@@ -30,48 +29,17 @@ namespace Lab_AudioAnalysis.Audio.Decorators
         }
 
 
-        private List<double> SmoothValues(int[] dilutedValues)
+        private int[] SmoothValues(int[] dilutedValues)
         {
-            var smoothedValues = new List<double>(dilutedValues.Length);
+            var smoothedValues = new int[dilutedValues.Length];
             int[] dataBuffer = new int[_smoothingFactor];
             for (int index = 0; index < dilutedValues.Length; index++)
             {
                 dilutedValues.CopyRange(dataBuffer, index);
-                var average = dataBuffer.Average();
-                smoothedValues.Add(average);
+                int average = (int)dataBuffer.Average();
+                smoothedValues[index] = average;
             }
             return smoothedValues;
-        }
-
-        private Polyline CreatePolyline()
-        {
-            var polyline = new Polyline();
-            polyline.Stroke = BrushColor;
-            polyline.Name = "smoothed_waveform";
-            polyline.StrokeThickness = 1;
-            return polyline;
-        }
-
-        private void Render(Canvas audioCanvas, List<double> smoothedValues, Polyline polyline)
-        {
-            var width = audioCanvas.ActualWidth;
-            var height = audioCanvas.ActualHeight;
-            for (int xPos = 0; xPos < smoothedValues.Count; xPos++)
-            {
-                double smoothedValue = smoothedValues[xPos];
-                var point = Normalize(smoothedValues.Count, width, height, xPos, smoothedValue);
-                polyline.Points.Add(point);
-            }
-            audioCanvas.Children.Add(polyline);
-        }
-
-        private Point Normalize(int totalPoints, double width, double height, int xPos, double y)
-        {
-            var point = new Point();
-
-            point.X = 1.0 * xPos / totalPoints * width;
-            point.Y = height / 2.0 - y / (Int32.MaxValue * 1.0) * (height / 2.0);
-            return point;
         }
     }
 }

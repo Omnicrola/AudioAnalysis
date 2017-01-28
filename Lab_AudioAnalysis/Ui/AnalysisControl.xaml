@@ -5,14 +5,26 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Lab_AudioAnalysis.Ui"
              xmlns:filePicker="clr-namespace:Lab_AudioAnalysis.Ui.FilePicker"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <filePicker:FilePickerControl FileSelected="OnFileSelected" Grid.Row="0" />
-        <Canvas x:Name="AudioCanvas" Grid.Row="1" SizeChanged="OnCanvasResize"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Slider Minimum="0" Maximum="300000000" Width="400" Margin="5" Name="FloorSlider" Value="{Binding FloorValue}"/>
+            <TextBlock >
+                <Run Text="Floor:"/>
+                <Run Text="{Binding ElementName=FloorSlider, Path=Value}"/>
+            </TextBlock>
+        </StackPanel>
+        <Canvas x:Name="AudioCanvas" 
+                Background="LightGray"
+                Grid.Row="2" 
+                SizeChanged="OnCanvasResize"/>
     </Grid>
 </UserControl>
