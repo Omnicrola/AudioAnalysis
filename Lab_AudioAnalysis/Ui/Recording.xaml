@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Lab_AudioAnalysis.Ui.Recording"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Lab_AudioAnalysis.Ui"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Button Margin="10" Padding="20,4" Click="Start_OnClick" x:Name="StartButton">Start</Button>
+            <Button Margin="10" Padding="20,4" Click="Stop_OnClick" x:Name="StopButton">Stop</Button>
+            <Button Margin="200,5,5,5" Padding="20,0" Click="Replay_OnClick">Replay Last</Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Label Margin="4,2" Width="100">MIN:</Label>
+            <Label Margin="4,2" Width="100" Content="{Binding MinLevel, StringFormat='0:0,0'}"/>
+            <Label Margin="4,2" Width="100">MAX:</Label>
+            <Label Margin="4,2" Width="100" Content="{Binding MaxLevel, StringFormat=N}"/>
+            <Label Margin="4,2" Width="100">AVG:</Label>
+            <Label Margin="4,2" Width="100"  Content="{Binding AverageLevel, StringFormat=N}"/>
+        </StackPanel>
+        <Border BorderThickness="1" BorderBrush="Black" Margin="5" Grid.Row="2">
+            <Canvas x:Name="AudioCanvas"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Canvas>
+        </Border>
+
+    </Grid>
+</UserControl>

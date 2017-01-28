@@ -1,0 +1,32 @@
+﻿<Window x:Class="Lab_AudioAnalysis.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Lab_AudioAnalysis"
+        xmlns:ui="clr-namespace:Lab_AudioAnalysis.Ui"
+        mc:Ignorable="d"
+        Title="Audio Analysis" 
+        Width="800"
+        Height="600" 
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <TabControl >
+            <TabItem Header="Recording">
+                <ui:Recording LogEvent="OnLogEvent"></ui:Recording>
+            </TabItem>
+            <TabItem Header="Load">
+                <ui:AnalysisControl LogEvent="OnLogEvent"/>
+            </TabItem>
+        </TabControl>
+        <TextBox Grid.Row="1"
+                 VerticalScrollBarVisibility="Visible" 
+                 x:Name="LogTextBox"
+                 Text="{Binding LogData}"
+                 Margin="5"></TextBox>
+    </Grid>
+</Window>
