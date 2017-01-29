@@ -16,6 +16,7 @@ namespace Lab_AudioAnalysis.Ui
     {
         private readonly AudioCanvasRenderer _audioCanvasRenderer;
         private BackgroundFilterDecorator _backgroundFilterDecorator;
+        private FastFourierTransformRenderer _fastFourierTransformRenderer;
         public event EventHandler<LogEventArgs> LogEvent;
 
         public double FloorValue
@@ -31,6 +32,7 @@ namespace Lab_AudioAnalysis.Ui
             _audioCanvasRenderer = new AudioCanvasRenderer(AudioCanvas, 10, 500, 500);
             _audioCanvasRenderer.Decorators.Add(new PassthroughDecorator() { BrushColor = Brushes.CornflowerBlue });
             _audioCanvasRenderer.Decorators.Add(new SmoothingDecorator(10) { BrushColor = Brushes.OrangeRed });
+            _fastFourierTransformRenderer = new FastFourierTransformRenderer(FftAudioCanvas);
             _backgroundFilterDecorator = new BackgroundFilterDecorator()
             {
                 BrushColor = Brushes.Chartreuse,
@@ -49,6 +51,7 @@ namespace Lab_AudioAnalysis.Ui
             using (WaveFileReader waveReader = new WaveFileReader(e.Filename))
             {
                 _audioCanvasRenderer.Render(waveReader);
+                _fastFourierTransformRenderer.Draw(waveReader);
             }
         }
 

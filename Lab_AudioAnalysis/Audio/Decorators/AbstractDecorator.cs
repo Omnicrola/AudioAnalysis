@@ -35,6 +35,11 @@ namespace Lab_AudioAnalysis.Audio.Decorators
             audioCanvas.Children.Add(polyline);
         }
 
+        public virtual void Decorate(Canvas audioCanvas, byte[] rawData)
+        {
+
+        }
+
 
         private Point Normalize(int totalPoints, double width, double height, int xPos, double y)
         {

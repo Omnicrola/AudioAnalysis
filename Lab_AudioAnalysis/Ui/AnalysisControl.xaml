@@ -12,7 +12,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="81*" />
+            <RowDefinition Height="19*"/>
+            <RowDefinition Height="300*" />
         </Grid.RowDefinitions>
         <filePicker:FilePickerControl FileSelected="OnFileSelected" Grid.Row="0" />
         <StackPanel Orientation="Horizontal" Grid.Row="1">
@@ -25,6 +27,10 @@
         <Canvas x:Name="AudioCanvas" 
                 Background="LightGray"
                 Grid.Row="2" 
+                SizeChanged="OnCanvasResize" Grid.RowSpan="2"/>
+        <Canvas x:Name="FftAudioCanvas" 
+                Background="Black"
+                Grid.Row="4" 
                 SizeChanged="OnCanvasResize"/>
     </Grid>
 </UserControl>
