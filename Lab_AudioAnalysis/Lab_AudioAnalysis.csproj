@@ -60,15 +60,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Audio\Api\IAudioPlayer.cs" />
+    <Compile Include="Audio\Api\Implementation\NAudioOutputDevice.cs" />
+    <Compile Include="Audio\Api\Implementation\NAudioPlayer.cs" />
     <Compile Include="Audio\AudioCanvasRenderer.cs" />
     <Compile Include="Audio\Decorators\AbstractDecorator.cs" />
     <Compile Include="Audio\Decorators\BackgroundFilterDecorator.cs" />
-    <Compile Include="Audio\Decorators\FastFourierTransformRenderer.cs" />
+    <Compile Include="Audio\FastFourierTransformRenderer.cs" />
     <Compile Include="Audio\Decorators\PassthroughDecorator.cs" />
     <Compile Include="Audio\Decorators\IAudioCanvasDecorator.cs" />
-    <Compile Include="Audio\Decorators\SampleAggregator.cs" />
+    <Compile Include="Audio\SampleAggregator.cs" />
     <Compile Include="BitmapRendering\BitmapWrapper.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Audio\Api\IAudioOutputDevice.cs" />
     <Compile Include="Ui\AnalysisControl.xaml.cs">
       <DependentUpon>AnalysisControl.xaml</DependentUpon>
     </Compile>
@@ -77,6 +81,9 @@
     </Compile>
     <Compile Include="Ui\FilePicker\FileSelectEventArgs.cs" />
     <Compile Include="Ui\LogEventArgs.cs" />
+    <Compile Include="Ui\RealTimeFilteringControl.xaml.cs">
+      <DependentUpon>RealTimeFilteringControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Ui\Recording.xaml.cs">
       <DependentUpon>Recording.xaml</DependentUpon>
     </Compile>
@@ -103,25 +110,29 @@
     </Compile>
     <Compile Include="AudioFileRenderer.cs" />
     <Compile Include="DynamicAudioRenderer.cs" />
-    <Compile Include="EmptyRecording.cs" />
-    <Compile Include="IAudioApi.cs" />
-    <Compile Include="IAudioDevice.cs" />
-    <Compile Include="IAudioRecorder.cs" />
-    <Compile Include="IAudioRecording.cs" />
-    <Compile Include="NAudioApiWrapper.cs" />
+    <Compile Include="Audio\Api\EmptyRecording.cs" />
+    <Compile Include="Audio\Api\IAudioApi.cs" />
+    <Compile Include="Audio\Api\IAudioInputDevice.cs" />
+    <Compile Include="Audio\Api\IAudioRecorder.cs" />
+    <Compile Include="Audio\Api\IAudioRecording.cs" />
+    <Compile Include="Audio\Api\Implementation\NAudioApiWrapper.cs" />
     <Compile Include="Ui\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Ui\RealTimeFilteringControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Ui\Recording.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NAudioDevice.cs" />
-    <Compile Include="NAudioRecorder.cs" />
-    <Compile Include="NAudioWavRecording.cs" />
+    <Compile Include="Audio\Api\Implementation\NAudioInputDevice.cs" />
+    <Compile Include="Audio\Api\Implementation\NAudioRecorder.cs" />
+    <Compile Include="Audio\Api\Implementation\NAudioWavRecording.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

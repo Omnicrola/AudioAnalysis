@@ -1,7 +1,7 @@
 ﻿using System;
 using NAudio.Wave;
 
-namespace Lab_AudioAnalysis
+namespace Lab_AudioAnalysis.Audio.Api.Implementation
 {
     internal class NAudioRecorder : IAudioRecorder
     {
@@ -11,8 +11,8 @@ namespace Lab_AudioAnalysis
         public int TotalBytesRecorded { get; private set; }
         public IAudioRecording AudioRecording { get; private set; }
         public TimeSpan TotalTime { get; private set; }
+        public WaveFormat WaveFormat { get; }
         public event EventHandler<WaveInEventArgs> BytesAvailable;
-
         public event EventHandler StoppedRecording;
 
         public NAudioRecorder(WaveIn waveInput, IAudioRecording audioRecording)
@@ -34,6 +34,7 @@ namespace Lab_AudioAnalysis
             _waveInput.Dispose();
             AudioRecording.Close();
         }
+
 
         private void Input_DataAvailable(object sender, WaveInEventArgs e)
         {

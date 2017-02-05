@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using Lab_AudioAnalysis.Ui;
 
-namespace Lab_AudioAnalysis
+namespace Lab_AudioAnalysis.Ui
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

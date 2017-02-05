@@ -1,13 +1,13 @@
 ﻿using NAudio.Wave;
 
-namespace Lab_AudioAnalysis
+namespace Lab_AudioAnalysis.Audio.Api.Implementation
 {
-    internal class NAudioDevice : IAudioDevice
+    internal class NAudioInputDevice : IAudioInputDevice
     {
         private readonly int _deviceId;
         private readonly WaveInCapabilities _waveInCapabilities;
 
-        public NAudioDevice(int deviceId, WaveInCapabilities waveInCapabilities)
+        public NAudioInputDevice(int deviceId, WaveInCapabilities waveInCapabilities)
         {
             _deviceId = deviceId;
             _waveInCapabilities = waveInCapabilities;
@@ -17,6 +17,15 @@ namespace Lab_AudioAnalysis
         {
             var waveInput = CreateWaveInput();
             return new NAudioRecorder(waveInput, new EmptyRecording());
+        }
+
+        public WaveIn GetWavIn()
+        {
+            return new WaveIn
+            {
+                DeviceNumber = _deviceId,
+                WaveFormat = new WaveFormat(44100, _waveInCapabilities.Channels)
+            };
         }
 
         public IAudioRecorder CreateRecording(string filename)
@@ -38,6 +47,11 @@ namespace Lab_AudioAnalysis
                 WaveFormat = new WaveFormat(44100, _waveInCapabilities.Channels)
             };
             return waveInput;
+        }
+
+        public override string ToString()
+        {
+            return $"{_deviceId} : {_waveInCapabilities.ProductName}";
         }
     }
 }

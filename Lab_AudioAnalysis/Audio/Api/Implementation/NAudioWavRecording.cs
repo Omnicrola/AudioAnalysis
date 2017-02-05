@@ -2,7 +2,7 @@
 using System.Threading;
 using NAudio.Wave;
 
-namespace Lab_AudioAnalysis
+namespace Lab_AudioAnalysis.Audio.Api.Implementation
 {
     internal class NAudioWavRecording : IAudioRecording
     {

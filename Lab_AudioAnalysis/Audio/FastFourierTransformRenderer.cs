@@ -2,38 +2,36 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Lab_AudioAnalysis.Audio.Decorators;
 using Lab_AudioAnalysis.BitmapRendering;
 using NAudio.Dsp;
 using NAudio.Wave;
 
-namespace Lab_AudioAnalysis.Audio.Decorators
+namespace Lab_AudioAnalysis.Audio
 {
     public class FastFourierTransformRenderer
     {
         private readonly Canvas _canvas;
+        private readonly List<BiQuadFilter> _filters;
         private readonly SampleAggregator _sampleAggregator;
-        private WriteableBitmap _writeableBitmap;
-        private Image _image;
         private BitmapWrapper _bitmapWrapper;
 
         private int xPos = 0;
         private static readonly int VERTICAL_SCALE = 1;
 
-        private int _horizontalScale = 2;
+        private int _horizontalScale = 4;
         private static readonly int FFT_SAMPLE_SIZE = 1024;
 
-        public FastFourierTransformRenderer(Canvas canvas)
+        public FastFourierTransformRenderer(Canvas canvas, List<BiQuadFilter> filters)
         {
             _canvas = canvas;
-            _sampleAggregator = new SampleAggregator(FFT_SAMPLE_SIZE);
-            _sampleAggregator.PerformFFT = true;
-            _sampleAggregator.FftCalculated += FftCalculated;
+            _filters = filters;
+            //            _sampleAggregator = new SampleAggregator(null, FFT_SAMPLE_SIZE);
+            //            _sampleAggregator.PerformFFT = true;
+            //            _sampleAggregator.FftCalculated += FftCalculated;
         }
 
         private void FftCalculated(object sender, FftEventArgs e)
@@ -43,9 +41,8 @@ namespace Lab_AudioAnalysis.Audio.Decorators
             double[] singleBin = new double[resultsPerBin];
             int binIndex = 0;
             int yPos = 0;
-            for (int index = 0; index < e.Result.Length; index++)
+            foreach (Complex complex in e.Result)
             {
-                Complex complex = e.Result[index];
                 double intensity = GetIntensity(complex);
                 singleBin[binIndex] = intensity;
 
@@ -98,10 +95,11 @@ namespace Lab_AudioAnalysis.Audio.Decorators
             wavReader.Position = 0;
             for (int i = 0; i < wavReader.SampleCount; i++)
             {
-                var sampleFrame = wavReader.ReadNextSampleFrame();
+                float[] sampleFrame = wavReader.ReadNextSampleFrame();
                 foreach (float sampleValue in sampleFrame)
                 {
-                    _sampleAggregator.Add(sampleValue);
+                    float filteredValue = FilterValue(sampleValue);
+                    //                    _sampleAggregator.Add(filteredValue);
                 }
             }
 
@@ -113,6 +111,15 @@ namespace Lab_AudioAnalysis.Audio.Decorators
             }
             _canvas.Children.Add(new Image { Source = _bitmapWrapper.Bitmap });
 
+        }
+
+        private float FilterValue(float sampleValue)
+        {
+            foreach (BiQuadFilter biQuadFilter in _filters)
+            {
+                sampleValue = biQuadFilter.Transform(sampleValue);
+            }
+            return sampleValue;
         }
     }
 }

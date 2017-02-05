@@ -1,4 +1,4 @@
-﻿namespace Lab_AudioAnalysis
+﻿namespace Lab_AudioAnalysis.Audio.Api
 {
     internal class EmptyRecording : IAudioRecording
     {

@@ -1,4 +1,4 @@
-﻿<Window x:Class="Lab_AudioAnalysis.MainWindow"
+﻿<Window x:Class="Lab_AudioAnalysis.Ui.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,15 +7,18 @@
         xmlns:ui="clr-namespace:Lab_AudioAnalysis.Ui"
         mc:Ignorable="d"
         Title="Audio Analysis" 
-        Width="800"
-        Height="600" 
+        Width="1200"
+        Height="800" 
         >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
-        <TabControl >
+        <TabControl>
+            <TabItem Header="Live Filter">
+                <ui:RealTimeFilteringControl LogEvent="OnLogEvent"/>
+            </TabItem>
             <TabItem Header="Recording">
                 <ui:Recording LogEvent="OnLogEvent"></ui:Recording>
             </TabItem>

@@ -1,7 +1,7 @@
 using System;
 using NAudio.Wave;
 
-namespace Lab_AudioAnalysis
+namespace Lab_AudioAnalysis.Audio.Api
 {
     public interface IAudioRecorder
     {
@@ -10,6 +10,7 @@ namespace Lab_AudioAnalysis
         int TotalBytesRecorded { get; }
         IAudioRecording AudioRecording { get; }
         TimeSpan TotalTime { get; }
+        WaveFormat WaveFormat { get; }
         event EventHandler<WaveInEventArgs> BytesAvailable;
     }
 

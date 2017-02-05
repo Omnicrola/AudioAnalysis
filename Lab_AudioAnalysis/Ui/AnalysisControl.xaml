@@ -11,18 +11,34 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="100" />
             <RowDefinition Height="81*" />
             <RowDefinition Height="19*"/>
             <RowDefinition Height="300*" />
         </Grid.RowDefinitions>
-        <filePicker:FilePickerControl FileSelected="OnFileSelected" Grid.Row="0" />
-        <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <Slider Minimum="0" Maximum="300000000" Width="400" Margin="5" Name="FloorSlider" Value="{Binding FloorValue}"/>
-            <TextBlock >
+        <filePicker:FilePickerControl x:Name="FilePicker" FileSelected="OnFileSelected" Grid.Row="0" />
+        <StackPanel Grid.Row="1">
+            <StackPanel Orientation="Horizontal" >
+                <Slider Minimum="0" Maximum="300000000" Width="400" Margin="5" Name="FloorSlider" Value="{Binding FloorValue}"/>
+                <TextBlock >
                 <Run Text="Floor:"/>
                 <Run Text="{Binding ElementName=FloorSlider, Path=Value}"/>
-            </TextBlock>
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" >
+                <Slider Minimum="0" Maximum="30000" Width="400" Margin="5" Name="LowPassSlider" ValueChanged="LowPass_OnValueChanged"/>
+                <TextBlock >
+                <Run Text="Low Pass:"/>
+                <Run Text="{Binding ElementName=LowPassSlider, Path=Value}"/>
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" >
+                <Slider Minimum="0" Maximum="20000" Width="400" Margin="5" Name="HighPassSlider"  ValueChanged="HighPass_OnValueChanged"/>
+                <TextBlock >
+                <Run Text="High Pass:"/>
+                <Run Text="{Binding ElementName=HighPassSlider, Path=Value}"/>
+                </TextBlock>
+            </StackPanel>
         </StackPanel>
         <Canvas x:Name="AudioCanvas" 
                 Background="LightGray"
