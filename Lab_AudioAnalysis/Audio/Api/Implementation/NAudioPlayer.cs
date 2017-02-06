@@ -1,4 +1,5 @@
 using Lab_AudioAnalysis.Audio.Decorators;
+using NAudio.Dsp;
 using NAudio.Wave;
 
 namespace Lab_AudioAnalysis.Audio.Api.Implementation
@@ -7,7 +8,7 @@ namespace Lab_AudioAnalysis.Audio.Api.Implementation
     {
         private WaveOut _waveOut;
         private WaveIn _waveIn;
-        private readonly BufferedWaveProvider _bufferedWaveProvider;
+        private readonly FilteredBuffer _filteredBuffer;
 
         public bool IsPlaying { get; private set; }
 
@@ -17,14 +18,16 @@ namespace Lab_AudioAnalysis.Audio.Api.Implementation
             _waveOut = waveOut;
             _waveIn = waveIn;
 
-            _bufferedWaveProvider = new BufferedWaveProvider(waveIn.WaveFormat);
+            _filteredBuffer = new FilteredBuffer(waveIn.WaveFormat);
+            _filteredBuffer.Filters.Add(BiQuadFilter.LowPassFilter(waveIn.WaveFormat.SampleRate, 100, 1));
+
 
             _waveIn.BufferMilliseconds = 25;
             _waveOut.PlaybackStopped += WaveIn_PlaybackStopped;
             _waveIn.DataAvailable += StreamData;
 
             _waveOut.DesiredLatency = 100;
-            _waveOut.Init(_bufferedWaveProvider);
+            _waveOut.Init(_filteredBuffer);
             _waveOut.PlaybackStopped += WaveOut_PlaybackStopped;
 
             _waveIn.StartRecording();
@@ -33,7 +36,7 @@ namespace Lab_AudioAnalysis.Audio.Api.Implementation
 
         private void StreamData(object sender, WaveInEventArgs e)
         {
-            _bufferedWaveProvider.AddSamples(e.Buffer, 0, e.BytesRecorded);
+            _filteredBuffer.AddSamples(e.Buffer, 0, e.BytesRecorded);
         }
 
         public void Start()

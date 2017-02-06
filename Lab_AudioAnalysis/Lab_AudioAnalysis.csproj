@@ -61,6 +61,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Audio\Api\IAudioPlayer.cs" />
+    <Compile Include="Audio\Api\Implementation\FilteredBuffer.cs" />
     <Compile Include="Audio\Api\Implementation\NAudioOutputDevice.cs" />
     <Compile Include="Audio\Api\Implementation\NAudioPlayer.cs" />
     <Compile Include="Audio\AudioCanvasRenderer.cs" />
